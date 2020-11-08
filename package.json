@@ -4,7 +4,8 @@
   "description": "This is an attempt to implement a Kalman filter on my HPR Level 1 Rocket Flight.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "Rocket",
@@ -13,9 +14,8 @@
     "NAR"
   ],
   "author": "Nolan Sneed",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "dotenv": "^8.2.0",
     "express": "^4.17.1"
   }
 }

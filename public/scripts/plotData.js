@@ -138,7 +138,7 @@ function plotData() {
 }
 
 async function getData() {
-  const response = await fetch('Helios.csv');
+  const response = await fetch('../assets/Helios.csv');
   const data = await response.text();
 
   const table = data.split('\n').slice(1);

@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-require('dotenv').config
 
 /* Serve to local IP address or Heroku Port */
 const PORT = process.env.PORT || 3000;
@@ -9,4 +8,4 @@ app.listen(PORT, () => {
 });
 
 /* Serve the main webpage */
-app.use(express.static('../root'));
+app.use(express.static('public'));

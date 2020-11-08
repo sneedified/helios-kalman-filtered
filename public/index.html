@@ -9,9 +9,9 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <script src="plotData.js"></script>
-  <script src="kalmanFilter.js"></script>
-  <link rel="stylesheet" href="stylesheet.css">
+  <script src="scripts/plotData.js"></script>
+  <script src="scripts/kalmanFilter.js"></script>
+  <link rel="stylesheet" href="styles/stylesheet.css">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
     <p>You can change the constants here and re-plot to see the results of the Kalman Filter!</p>
     <div class="formDiv">
       <form id="constants" onsubmit="formSubmitted()">
-        <label for="mVar">Measurement Uncertainty (r)\(^*\):</label><br>
+        <label for="mVar">Measurement Uncertainty in Feet (r)\(^*\):</label><br>
         <input class = "numInput" id="mVar" name="mVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
         <label for="pVar">Process Noise Variance (q):</label><br>
         <input class = "numInput" id="pVar" name="pVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
