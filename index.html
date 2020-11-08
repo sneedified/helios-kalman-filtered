@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Nolan Sneed: Testing Kalman Filter</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="plotData.js"></script>
+  <script src="kalmanFilter.js"></script>
+  <link rel="stylesheet" href="stylesheet.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Kalman Filtering Test on Helios Rocket Flight Data</h1>
+    <p>This is the altitude data from the whole flight.</p>
+    <div class="wholeFlight">
+      <canvas id="wholeFlight"></canvas>
+    </div>
+    <p>Below is the data near apogee. This is where I need the filter to be the most accurate.</p>
+    <div class="apogee">
+      <canvas id="apogee"></canvas>
+    </div>
+    <h2>Kalman Filter Equations:</h2>
+    <div class="kalmanEquations">
+      <p>
+        <u>State Update Equation:</u>
+        <div class="math">
+          $$ \hat{x}_{n,n} =\ \hat{x}_{n,n-1} +\ K_1(z_n -\ \hat{x}_{n,n-1})$$
+        </div>
+      </p>
+      <p>
+        <u>State Extrapolation Equation:</u>
+        <div class="math">
+          $$\hat{x}_{n+1,n} =\ \hat{x}_{n,n} +\ \hat{\dot{x}}_{n,n}\Delta{t} +\
+          \hat{\ddot{x}}_{n,n}\frac{\Delta{t^2}}{2}$$
+          $$\hat{\dot{x}}_{n+1,n} =\ \hat{\dot{x}}_{n,n} +\ \hat{\ddot{x}}_{n,n}\Delta{t}$$
+          $$\hat{\ddot{x}}_{n+1,n} =\ \hat{\ddot{x}}_{n,n}$$
+        </div>
+      </p>
+      <p>
+        <u>Kalman Gain Equation:</u>
+        <div class="math">
+          $$K_1 =\ \frac{p_{n,n-1}}{p_{n,n-1} + r_n}$$
+        </div>
+      </p>
+      <p>
+        <u>Covariance Update Equation:</u>
+        <div class="math">
+          $$p_{n+1,n} =\ p_{n,n} +\ q_n$$
+        </div>
+      </p>
+      <p>
+        <u>Covariance Extrapolation Equation:</u>
+        <div class="math">
+          $$p_{n,n} =\ (1-K_1)p_{n,n-1}$$
+        </div>
+      </p>
+    </div>
+    <p>
+      Where:
+      <br>
+      <br>
+      \(\hat{x} =\ \) Altitude
+      <br>
+      <br>
+      \(\hat{\dot{x}} =\ \) Velocity (in Z-Direction)
+      <br>
+      <br>
+      \(\hat{\ddot{x}} =\ \) Acceleration (in Z-Direction)
+      <br>
+      <br>
+      \(K_1 =\ \) Kalman Gain
+      <br>
+      <br>
+      \(z =\ \) Altitude Measurement
+      <br>
+      <br>
+      \(p =\ \) Estimate Uncertainty (Covariance)
+      <br>
+      <br>
+      \(r =\ \) Measurement Uncertainty (Covariance)
+      <br>
+      <br>
+      \(q =\ \) Process Noise Variance
+    </p>
+    <p>Footer</p>
+  </div>
+</body>
+
+</html>

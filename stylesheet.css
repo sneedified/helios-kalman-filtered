@@ -1,0 +1,48 @@
+body {
+  background-color: rgb(74, 74, 74);
+  color: white;
+  font-family: "Arial";
+}
+
+h1 {
+  text-align: center;
+  padding: 1em;
+}
+
+h2 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+.container {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.kalmanEquations {
+  border-style: solid;
+  margin-left: 20em;
+  margin-right: 20em;
+  border-radius: 1em;
+}
+
+.math {
+  font-size: 25px;
+}
+
+.wholeFlight {
+  padding-left: 10em;
+  padding-right: 10em;
+  padding-top: 5em;
+  padding-bottom: 5em;
+}
+
+.apogee {
+  padding-left: 10em;
+  padding-right: 10em;
+  padding-top: 5em;
+  padding-bottom: 5em;
+}
