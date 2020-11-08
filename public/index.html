@@ -23,6 +23,8 @@
       <form id="constants" onsubmit="formSubmitted()">
         <label for="mVar">Measurement Uncertainty in Feet (r)\(^*\):</label><br>
         <input class = "numInput" id="mVar" name="mVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+        <label for="a">Constant Acceleration in ft/s\(^2\) (\(\hat{\ddot{x}}\)):</label><br>
+        <input class = "numInput" id="a" name="a" type="number" step="any"><br><br>
         <label for="pVar">Process Noise Variance (q):</label><br>
         <input class = "numInput" id="pVar" name="pVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
         <input type="submit" value="Plot"><br>

@@ -1,6 +1,6 @@
   // Constants (Sort of. Will be changeable by form input.)
   const r = 0.00172; // Measurement Uncertainty (Variance)
-  const a = -32.2; // Acceleration due to gravity in ft/s^2
+  const a = 0; // Acceleration due to gravity in ft/s^2
   const q = 0.001; // Noise variance or something?
 
   function filterData() {
@@ -9,6 +9,7 @@
 
     // Constants
     rForm = parseFloat(document.getElementById("mVar").value);
+    aForm = parseFloat(document.getElementById("a").value);
     qForm = parseFloat(document.getElementById("pVar").value);
 
     // Kalman Variables
@@ -27,7 +28,7 @@
 
       // Measure
       let measurement = altWholeFlight[i];
-      let dt = (timeLabelsWholeFlight[i] - timeLabelsWholeFlight[i - 1]) / 60;
+      let dt = (actualTimeWholeFlight[i] - actualTimeWholeFlight[i - 1]);
 
       // Update
       K = pPrev / (pPrev + rForm);
@@ -37,8 +38,8 @@
       pCurr = (1 - K) * pPrev;
 
       // Predict
-      velNext = velCurr + a * dt;
-      altNext = altCurr + velCurr * dt + 0.5 * a * dt ^ 2;
+      velNext = velCurr + aForm * dt;
+      altNext = altCurr + velCurr * dt + 0.5 * aForm * dt ^ 2;
       pNext = pCurr + qForm;
 
       velPrev = velNext;
@@ -68,7 +69,7 @@
 
       // Measure
       let measurement = altWholeFlight[i];
-      let dt = (timeLabelsWholeFlight[i] - timeLabelsWholeFlight[i - 1]) / 60;
+      let dt = (actualTimeWholeFlight[i] - actualTimeWholeFlight[i - 1]) / 60;
 
       // Update
       altCurr = altPrev + alpha * (measurement - altPrev);

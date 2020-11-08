@@ -1,3 +1,4 @@
+let actualTimeWholeFlight = [];
 let timeLabelsWholeFlight = [];
 let altWholeFlight = [];
 let altKalmanWholeFlight = [];
@@ -9,13 +10,16 @@ initialize();
 
 window.onload = function () {
   let rForm = parseFloat(sessionStorage.getItem("rForm")) || r;
+  let aForm = parseFloat(sessionStorage.getItem("aForm")) || a;
   let qForm = parseFloat(sessionStorage.getItem("qForm")) || q;
   document.getElementById("mVar").value = rForm;
+  document.getElementById("a").value = aForm;
   document.getElementById("pVar").value = qForm;
 };
 
 function formSubmitted() {
   sessionStorage.setItem("rForm", document.getElementById("mVar").value);
+  sessionStorage.setItem("aForm", document.getElementById("a").value);
   sessionStorage.setItem("qForm", document.getElementById("pVar").value);
   console.log(sessionStorage.getItem("rForm"));
   plotData();
@@ -23,6 +27,7 @@ function formSubmitted() {
 
 function resetDefaults() {
   document.getElementById("mVar").value = r;
+  document.getElementById("a").value = a;
   document.getElementById("pVar").value = q;
 }
 
@@ -144,17 +149,27 @@ async function getData() {
   const table = data.split('\n').slice(1);
   table.forEach(row => {
     const columns = row.split(',');
-    const time = parseFloat((columns[0] / 60000) - 38).toFixed(5); // Convert Milliseconds to Minutes
-    timeLabelsWholeFlight.push(time);
+    let time = parseFloat(((columns[0] - 2305112) / 1000)).toFixed(5); // Convert Milliseconds to Seconds
+    actualTimeWholeFlight.push(time);
+    timeLabelsWholeFlight.push(toMMSS(time))
     const alt = parseFloat(columns[4]); // Altitude in Feet
     altWholeFlight.push(alt);
   });
 }
 
+function toMMSS(time) {
+  // 1 - Extract minutes:
+  var minutes = parseInt(time / 60); // 60 seconds in 1 minute
+  // 2 - Keep only seconds not extracted to minutes:
+  time = (time % 60).toFixed(2);
+  return (minutes + ":" + time)
+}
+
 function createApogeeDataSet() {
-  let apogeeStartIndex = timeLabelsWholeFlight.indexOf("0.60538");
-  let apogeeEndIndex = timeLabelsWholeFlight.indexOf("0.76205");
+  let apogeeStartIndex = 49;
+  let apogeeEndIndex = 91;
   timeLabelsApogee = timeLabelsWholeFlight.slice(apogeeStartIndex, apogeeEndIndex);
+  console.log(timeLabelsApogee);
   altApogee = altWholeFlight.slice(apogeeStartIndex, apogeeEndIndex);
   altKalmanApogee = altKalmanWholeFlight.slice(apogeeStartIndex, apogeeEndIndex);
 }
