@@ -1,8 +1,6 @@
 const express = require('express');
 const app = express();
-const fetch = require('node-fetch');
-const request = require('request');
-require('dotenv').config();
+require('dotenv').config
 
 /* Serve to local IP address or Heroku Port */
 const PORT = process.env.PORT || 3000;
