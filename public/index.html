@@ -17,7 +17,6 @@
 <body>
   <div class="container">
     <h1>Kalman Filtering Test on Helios Rocket Flight Data</h1>
-    <p>This is the altitude data from the whole flight.</p>
     <p>You can change the constants here and re-plot to see the results of the Kalman Filter!</p>
     <div class="formDiv">
       <form id="constants" onsubmit="formSubmitted()">
@@ -32,10 +31,11 @@
       </form>
     </div>
     <p>\(^*\)Note that r was obtained for this dataset using data from the barometer but can be changed to see how it affects the filter.</p>
+    <p>This is the altitude data from the whole flight.</p>
     <div class="wholeFlight">
       <canvas id="wholeFlight"></canvas>
     </div>
-    <p>Below is the data near apogee. This is where I need the filter to be the most accurate.</p>
+    <p>Below is the data near apogee. This is where the filter needs to be the most accurate.</p>
     <div class="apogee">
       <canvas id="apogee"></canvas>
     </div>
