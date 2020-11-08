@@ -1,0 +1,20 @@
+{
+  "name": "helios_kalman_data",
+  "version": "1.0.0",
+  "description": "This is an attempt to implement a Kalman filter on my HPR Level 1 Rocket Flight.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "Rocket",
+    "Kalman",
+    "HPR",
+    "NAR"
+  ],
+  "author": "Nolan Sneed",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
