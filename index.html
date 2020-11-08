@@ -18,6 +18,18 @@
   <div class="container">
     <h1>Kalman Filtering Test on Helios Rocket Flight Data</h1>
     <p>This is the altitude data from the whole flight.</p>
+    <p>You can change the constants here and re-plot to see the results of the Kalman Filter!</p>
+    <div class="formDiv">
+      <form id="constants" onsubmit="formSubmitted()">
+        <label for="mVar">Measurement Uncertainty (r)\(^*\):</label><br>
+        <input class = "numInput" id="mVar" name="mVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+        <label for="pVar">Process Noise Variance (q):</label><br>
+        <input class = "numInput" id="pVar" name="pVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+        <input type="submit" value="Plot"><br>
+        <button type="button" onClick="resetDefaults()">Reset Defaults</button>
+      </form>
+    </div>
+    <p>\(^*\)Note that r was obtained for this dataset using data from the barometer but can be changed to see how it affects the filter.</p>
     <div class="wholeFlight">
       <canvas id="wholeFlight"></canvas>
     </div>
@@ -62,33 +74,16 @@
       </p>
     </div>
     <p>
-      Where:
-      <br>
-      <br>
-      \(\hat{x} =\ \) Altitude
-      <br>
-      <br>
-      \(\hat{\dot{x}} =\ \) Velocity (in Z-Direction)
-      <br>
-      <br>
-      \(\hat{\ddot{x}} =\ \) Acceleration (in Z-Direction)
-      <br>
-      <br>
-      \(K_1 =\ \) Kalman Gain
-      <br>
-      <br>
-      \(z =\ \) Altitude Measurement
-      <br>
-      <br>
-      \(p =\ \) Estimate Uncertainty (Covariance)
-      <br>
-      <br>
-      \(r =\ \) Measurement Uncertainty (Covariance)
-      <br>
-      <br>
+      Where:<br><br>
+      \(\hat{x} =\ \) Altitude<br><br>
+      \(\hat{\dot{x}} =\ \) Velocity (in Z-Direction)<br><br>
+      \(\hat{\ddot{x}} =\ \) Acceleration (in Z-Direction)<br><br>
+      \(K_1 =\ \) Kalman Gain<br><br>
+      \(z =\ \) Altitude Measurement<br><br>
+      \(p =\ \) Estimate Uncertainty (Covariance)<br><br>
+      \(r =\ \) Measurement Uncertainty (Covariance)<br><br>
       \(q =\ \) Process Noise Variance
     </p>
-    <p>Footer</p>
   </div>
 </body>
 

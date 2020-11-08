@@ -5,10 +5,33 @@ let timeLabelsApogee = [];
 let altApogee = [];
 let altKalmanApogee = [];
 
-plotData();
+initialize();
 
-async function plotData() {
+window.onload = function () {
+  let rForm = parseFloat(sessionStorage.getItem("rForm")) || r;
+  let qForm = parseFloat(sessionStorage.getItem("qForm")) || q;
+  document.getElementById("mVar").value = rForm;
+  document.getElementById("pVar").value = qForm;
+};
+
+function formSubmitted() {
+  sessionStorage.setItem("rForm", document.getElementById("mVar").value);
+  sessionStorage.setItem("qForm", document.getElementById("pVar").value);
+  console.log(sessionStorage.getItem("rForm"));
+  plotData();
+};
+
+function resetDefaults() {
+  document.getElementById("mVar").value = r;
+  document.getElementById("pVar").value = q;
+}
+
+async function initialize() {
   await getData();
+  plotData();
+}
+
+function plotData() {
   filterData();
   createApogeeDataSet();
 
