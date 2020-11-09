@@ -19,14 +19,14 @@
     <h1>Kalman Filtering Test on Helios Rocket Flight Data</h1>
     <p>You can change the constants here and re-plot to see the results of the Kalman Filter!</p>
     <div class="formDiv">
-      <form id="constants" onsubmit="formSubmitted()">
+      <form id="constants">
         <label for="mVar">Measurement Uncertainty in Feet (r)\(^*\):</label><br>
         <input class = "numInput" id="mVar" name="mVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
         <label for="a">Constant Acceleration in ft/s\(^2\) (\(\hat{\ddot{x}}\)):</label><br>
         <input class = "numInput" id="a" name="a" type="number" step="any"><br><br>
         <label for="pVar">Process Noise Variance (q):</label><br>
         <input class = "numInput" id="pVar" name="pVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
-        <input type="submit" value="Plot"><br>
+        <button type="button" onClick = "rePlot()">Plot</button><br>
         <button type="button" onClick="resetDefaults()">Reset Defaults</button>
       </form>
     </div>

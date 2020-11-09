@@ -9,19 +9,15 @@ let altKalmanApogee = [];
 initialize();
 
 window.onload = function () {
-  let rForm = parseFloat(sessionStorage.getItem("rForm")) || r;
-  let aForm = parseFloat(sessionStorage.getItem("aForm")) || a;
-  let qForm = parseFloat(sessionStorage.getItem("qForm")) || q;
-  document.getElementById("mVar").value = rForm;
-  document.getElementById("a").value = aForm;
-  document.getElementById("pVar").value = qForm;
+  document.getElementById("mVar").value = r;
+  document.getElementById("a").value = a;
+  document.getElementById("pVar").value = q;
 };
 
-function formSubmitted() {
-  sessionStorage.setItem("rForm", document.getElementById("mVar").value);
-  sessionStorage.setItem("aForm", document.getElementById("a").value);
-  sessionStorage.setItem("qForm", document.getElementById("pVar").value);
-  console.log(sessionStorage.getItem("rForm"));
+function rePlot() {
+  rForm = document.getElementById("mVar").value;
+  aForm = document.getElementById("a").value;
+  qForm = document.getElementById("pVar").value;
   plotData();
 };
 
@@ -29,6 +25,7 @@ function resetDefaults() {
   document.getElementById("mVar").value = r;
   document.getElementById("a").value = a;
   document.getElementById("pVar").value = q;
+  plotData();
 }
 
 async function initialize() {
