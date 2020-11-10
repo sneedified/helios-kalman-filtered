@@ -26,6 +26,11 @@ h1 {
   padding: 1em;
 }
 
+p {
+  padding-left: 10em;
+  padding-right: 10em;
+}
+
 .formDiv {
   padding: 1em;
 }
@@ -46,14 +51,7 @@ h1 {
   font-size: 25px;
 }
 
-.wholeFlight {
-  padding-left: 10em;
-  padding-right: 10em;
-  padding-top: 5em;
-  padding-bottom: 5em;
-}
-
-.apogee {
+.chart {
   padding-left: 10em;
   padding-right: 10em;
   padding-top: 5em;

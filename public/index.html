@@ -10,36 +10,50 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script src="scripts/plotData.js"></script>
-  <script src="scripts/kalmanFilter.js"></script>
+  <script src="scripts/createCharts.js"></script>
+  <script src="scripts/matrix.js"></script>
+  <script src="scripts/kalmanFilter1D.js"></script>
+  <script src="scripts/kalmanFilter3D.js"></script>
   <link rel="stylesheet" href="styles/stylesheet.css">
 </head>
 
 <body>
   <div class="container">
     <h1>Kalman Filtering Test on Helios Rocket Flight Data</h1>
+    <h2>1 Dimensional Kalman Filter:</h2>
+    <p>
+      These first two charts show how a 1 dimensional Kalman filter approximates the altitude data from
+      my level 1 HPR certification flight. It is considered a 1 dimensional filter because it only 
+      approximates 1 system state, which in this case is altitude. The equations are much simpler for a 
+      1 dimensional filter but the approximation also isn't quite as good. I made this filter as an initial 
+      way to understand the Kalman filter before creating the 3 dimensional filter below. This filter is 
+      also computationally less intense than the 3 dimensional filter and still provides a good estimate 
+      of altitude for a scenario that computing power is low.
+    </p>
+    <br>
     <p>You can change the constants here and re-plot to see the results of the Kalman Filter!</p>
     <div class="formDiv">
-      <form id="constants">
-        <label for="mVar">Measurement Uncertainty in Feet (r)\(^*\):</label><br>
-        <input class = "numInput" id="mVar" name="mVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+      <form id="constants1D">
+        <label for="mVar1D">Measurement Uncertainty in Feet (r)\(^*\):</label><br>
+        <input class = "numInput" id="mVar1D" name="mVar1D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
         <label for="a">Constant Acceleration in ft/s\(^2\) (\(\hat{\ddot{x}}\)):</label><br>
         <input class = "numInput" id="a" name="a" type="number" step="any"><br><br>
-        <label for="pVar">Process Noise Variance (q):</label><br>
-        <input class = "numInput" id="pVar" name="pVar" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
-        <button type="button" onClick = "rePlot()">Plot</button><br>
-        <button type="button" onClick="resetDefaults()">Reset Defaults</button>
+        <label for="pVar1D">Process Noise Variance (q):</label><br>
+        <input class = "numInput" id="pVar1D" name="pVar1D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+        <button type="button" onClick = "rePlot1D()">Plot</button><br>
+        <button type="button" onClick="resetDefaults1D()">Reset Defaults</button>
       </form>
     </div>
     <p>\(^*\)Note that r was obtained for this dataset using data from the barometer but can be changed to see how it affects the filter.</p><br>
     <p>This is the altitude data from the whole flight:</p>
-    <div class="wholeFlight">
-      <canvas id="wholeFlight"></canvas>
+    <div class="chart">
+      <canvas id="wholeFlight1D"></canvas>
     </div>
     <p>Below is the data near apogee. This is where the filter needs to be the most accurate.</p>
-    <div class="apogee">
-      <canvas id="apogee"></canvas>
+    <div class="chart">
+      <canvas id="apogee1D"></canvas>
     </div>
-    <h2>Kalman Filter Equations:</h2>
+    <h2>Equations for a Kalman Filter in 1D:</h2>
     <div class="kalmanEquations">
       <p>
         <u>State Update Equation:</u>
@@ -86,6 +100,25 @@
       \(r =\ \) Measurement Uncertainty (Covariance)<br><br>
       \(q =\ \) Process Noise Variance
     </p>
+  </div>
+  <br>
+  <h2>3 Dimensional Kalman Filter:</h2>
+  <div class="formDiv">
+    <form id="constants3D">
+      <label for="mVar3D">Measurement Uncertainty in Feet (r)\(^*\):</label><br>
+      <input class = "numInput" id="mVar3D" name="mVar3D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+      <label for="pVar3D">Process Noise Variance (q):</label><br>
+      <input class = "numInput" id="pVar3D" name="pVar3D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+      <button type="button" onClick = "rePlot3D()">Plot</button><br>
+      <button type="button" onClick="resetDefaults3D()">Reset Defaults</button>
+    </form>
+  </div>
+  <p>\(^*\)Note that r was obtained for this dataset using data from the barometer but can be changed to see how it affects the filter.</p>
+  <div class="chart">
+    <canvas id="wholeFlight3D"></canvas>
+  </div>
+  <div class="chart">
+    <canvas id="apogee3D"></canvas>
   </div>
 </body>
 

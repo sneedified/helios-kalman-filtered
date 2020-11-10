@@ -6,43 +6,73 @@ function Matrix(matrix) {
 
 Matrix.prototype.add = function (n) {
 
+  let resultArray = [];
+
+  for (let i = 0; i < this.rows; i++) {
+    let row = [];
+    for (let j = 0; j < this.cols; j++) {
+      row[j] = 0;
+    }
+    resultArray[i] = row;
+  }
+
+  let result = new Matrix(resultArray);
+
   if (n instanceof Matrix) {
     // Element Wise
     for (var i = 0; i < this.rows; i++) {
       for (var j = 0; j < this.cols; j++) {
-        this.matrix[i][j] += n.matrix[i][j];
+        result.matrix[i][j] += this.matrix[i][j] + n.matrix[i][j];
       }
     }
   } else {
     // Scalar Addition
     for (var i = 0; i < this.rows; i++) {
       for (var j = 0; j < this.cols; j++) {
-        this.matrix[i][j] += n;
+        result.matrix[i][j] += this.matrix[i][j] + n;
       }
     }
   }
+
+  return result;
 }
 
 Matrix.prototype.subtract = function (n) {
+
+  let resultArray = [];
+
+  for (let i = 0; i < this.rows; i++) {
+    let row = [];
+    for (let j = 0; j < this.cols; j++) {
+      row[j] = 0;
+    }
+    resultArray[i] = row;
+  }
+
+  let result = new Matrix(resultArray);
 
   if (n instanceof Matrix) {
     // Element Wise
     for (var i = 0; i < this.rows; i++) {
       for (var j = 0; j < this.cols; j++) {
-        this.matrix[i][j] -= n.matrix[i][j];
+        result.matrix[i][j] += this.matrix[i][j] - n.matrix[i][j];
       }
     }
   } else {
     // Scalar Subtraction
     for (var i = 0; i < this.rows; i++) {
       for (var j = 0; j < this.cols; j++) {
-        this.matrix[i][j] -= n;
+        result.matrix[i][j] += this.matrix[i][j] - n;
       }
     }
   }
+
+  return result;
 }
 
 Matrix.prototype.multiply = function (n) {
+
+  let result = new Matrix(this.matrix);
 
   if (n instanceof Matrix) {
     // Matrix Product
@@ -52,7 +82,7 @@ Matrix.prototype.multiply = function (n) {
     }
     let a = this;
     let b = n;
-    var resultArray = [];
+    let resultArray = [];
 
     for (let i = 0; i < a.rows; i++) {
       let row = []
@@ -62,7 +92,7 @@ Matrix.prototype.multiply = function (n) {
       resultArray[i] = row;
     }
 
-    let result = new Matrix(resultArray);
+    result = new Matrix(resultArray);
 
     for (let i = 0; i < result.rows; i++) {
       for (let j = 0; j < result.cols; j++) {
@@ -73,20 +103,33 @@ Matrix.prototype.multiply = function (n) {
         result.matrix[i][j] = sum;
       }
     }
-    return result;
   } else {
+
+    let resultArray = [];
+
+    for (let i = 0; i < this.rows; i++) {
+      let row = [];
+      for (let j = 0; j < this.cols; j++) {
+        row[j] = 0;
+      }
+      resultArray[i] = row;
+    }
+
+    result = new Matrix(resultArray);
+
     // Scalar Product
     for (var i = 0; i < this.rows; i++) {
       for (var j = 0; j < this.cols; j++) {
-        this.matrix[i][j] *= n;
+        result.matrix[i][j] += this.matrix[i][j] * n;
       }
     }
   }
+  return result;
 }
 
 Matrix.prototype.transpose = function () {
 
-  var resultArray = [];
+  let resultArray = [];
 
   for (let i = 0; i < this.cols; i++) {
     let row = []

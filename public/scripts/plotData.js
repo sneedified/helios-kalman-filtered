@@ -1,142 +1,80 @@
+/* Raw Data Time */
 let actualTimeWholeFlight = [];
+
+/* Prettier Looking Time for Plotting */
 let timeLabelsWholeFlight = [];
-let altWholeFlight = [];
-let altKalmanWholeFlight = [];
+
+/* Pretty Time Labels for Apogee Chart */
 let timeLabelsApogee = [];
+
+/* Raw Altitude */
+let altWholeFlight = [];
 let altApogee = [];
-let altKalmanApogee = [];
+
+/* 1D Kalman Filter Altitude Date */
+let altKalmanWholeFlight1D = [];
+let altKalmanApogee1D = [];
+
+/* 3D Kalman Filter Altitude Data */
+let altKalmanWholeFlight3D = [];
+let altKalmanApogee3D = [];
+
+/* 3D Kalman Filter Velocity Data */
+let velKalmanWholeFlight3D = [];
+let velKalmanApogee3D = [];
 
 initialize();
 
 window.onload = function () {
-  document.getElementById("mVar").value = r;
+  document.getElementById("mVar1D").value = r;
   document.getElementById("a").value = a;
-  document.getElementById("pVar").value = q;
-};
+  document.getElementById("pVar1D").value = q;
+  document.getElementById("mVar3D").value = measurement_variance;
+  document.getElementById("pVar3D").value = acceleration_model_variance;
+}
 
-function rePlot() {
-  rForm = document.getElementById("mVar").value;
+function rePlot1D() {
+  rForm1D = document.getElementById("mVar1D").value;
   aForm = document.getElementById("a").value;
-  qForm = document.getElementById("pVar").value;
-  plotData();
-};
+  qForm1D = document.getElementById("pVar1D").value;
+  plotData1D();
+}
 
-function resetDefaults() {
-  document.getElementById("mVar").value = r;
+function resetDefaults1D() {
+  document.getElementById("mVar1D").value = r;
   document.getElementById("a").value = a;
-  document.getElementById("pVar").value = q;
-  plotData();
+  document.getElementById("pVar1D").value = q;
+  plotData1D();
+}
+
+function rePlot3D() {
+  rForm3D = document.getElementById("mVar3D").value;
+  qForm3D = document.getElementById("pVar3D").value;
+  plotData3D();
+}
+
+function resetDefaults3D() {
+  document.getElementById("mVar3D").value = measurement_variance;
+  document.getElementById("pVar3D").value = acceleration_model_variance;
+  plotData3D();
 }
 
 async function initialize() {
   await getData();
-  plotData();
+  plotData1D();
+  plotData3D();
 }
 
-function plotData() {
-  filterData();
-  createApogeeDataSet();
+function plotData1D() {
+  filterData1D();
+  createApogeeDataSet('1D');
+  createCharts('1D');
+}
 
-  Chart.defaults.global.defaultFontColor = 'white';
-
-  let ctx = document.getElementById('wholeFlight').getContext('2d');
-  const wholeFlight = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: timeLabelsWholeFlight,
-      datasets: [{
-        label: 'Raw Data',
-        data: altWholeFlight,
-        fill: false,
-        backgroundColor: 'rgba(255, 102, 0, 0.2)',
-        borderColor: 'rgba(255, 102, 0, 1)',
-        borderWidth: 1
-      }, {
-        label: 'Filtered Data',
-        data: altKalmanWholeFlight,
-        fill: false,
-        backgroundColor: 'rgba(0, 247, 55, 0.2)',
-        borderColor: 'rgba(0, 247, 55, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      elements: {
-        point: {
-          radius: 0
-        }
-      },
-      scales: {
-        xAxes: [{
-          ticks: {
-            maxTicksLimit: 10,
-            maxRotation: 0,
-            minRotation: 0
-          },
-          scaleLabel: {
-            display: true,
-            labelString: 'Time (minutes)'
-          }
-        }],
-        yAxes: [{
-          ticks: {
-            beginAtZero: false
-          },
-          scaleLabel: {
-            display: true,
-            labelString: 'Altitude (feet)'
-          }
-        }]
-      }
-    }
-  });
-
-  ctx = document.getElementById('apogee').getContext('2d');
-  const apogee = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: timeLabelsApogee,
-      datasets: [{
-        label: 'Raw Data',
-        data: altApogee,
-        fill: false,
-        backgroundColor: 'rgba(255, 102, 0, 0.2)',
-        borderColor: 'rgba(255, 102, 0, 1)',
-        borderWidth: 1
-      }, {
-        label: 'Filtered Data',
-        data: altKalmanApogee,
-        fill: false,
-        backgroundColor: 'rgba(0, 247, 55, 0.2)',
-        borderColor: 'rgba(0, 247, 55, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          ticks: {
-            maxTicksLimit: 10,
-            maxRotation: 0,
-            minRotation: 0
-          },
-          scaleLabel: {
-            display: true,
-            labelString: 'Time (minutes)'
-          }
-        }],
-        yAxes: [{
-          ticks: {
-            beginAtZero: false
-          },
-          scaleLabel: {
-            display: true,
-            labelString: 'Altitude (feet)'
-          }
-        }]
-      }
-    }
-  });
+function plotData3D() {
+  filterData3D();
+  createApogeeDataSet('3D');
+  createCharts('3D');
 }
 
 async function getData() {
@@ -162,11 +100,19 @@ function toMMSS(time) {
   return (minutes + ":" + time)
 }
 
-function createApogeeDataSet() {
+function createApogeeDataSet(selector) {
   let apogeeStartIndex = 49;
   let apogeeEndIndex = 91;
   timeLabelsApogee = timeLabelsWholeFlight.slice(apogeeStartIndex, apogeeEndIndex);
-  console.log(timeLabelsApogee);
   altApogee = altWholeFlight.slice(apogeeStartIndex, apogeeEndIndex);
-  altKalmanApogee = altKalmanWholeFlight.slice(apogeeStartIndex, apogeeEndIndex);
+  if (selector == '1D' || selector == 'ALL') {
+    altKalmanApogee1D = altKalmanWholeFlight1D.slice(apogeeStartIndex, apogeeEndIndex);
+  }
+  if (selector == '3D' || selector == 'ALL') {
+    altKalmanApogee3D = altKalmanWholeFlight3D.slice(apogeeStartIndex, apogeeEndIndex);
+    velKalmanApogee3D = velKalmanWholeFlight3D.slice(apogeeStartIndex, apogeeEndIndex);
+  }
+  if (selector != '1D' && selector != '3D' && selecor != 'ALL') {
+    console.log('Incorrect Apogee Selector Used.')
+  }
 }
