@@ -124,8 +124,6 @@ filterData3D = function () {
     [0, 0, parseFloat(document.getElementById("pVar3D").value)]
   ]);
 
-  console.log(rForm3D);
-
   /* Extrapolate the State for initial guess */
   xPredict = F.multiply(x_init);
 
@@ -158,6 +156,9 @@ filterData3D = function () {
     /* Store Updated Estimates */
     altKalmanWholeFlight3D[i] = xCorrect.matrix[0]; // Store Kalman Altitude
     velKalmanWholeFlight3D[i] = xCorrect.matrix[1] * 0.681818; // Store Kalman Velocity in mph
+    K1[i] = gain.matrix[0]; // Kalman Gains
+    K2[i] = gain.matrix[1];
+    K3[i] = gain.matrix[2];
 
     /* Update the Estimate Uncertainty */
     pCorrect = (((I.subtract(gain.multiply(H))).multiply(pPredict)).multiply(((I.subtract(gain.multiply(H))).transpose()))).add((gain.multiply(rForm3D)).multiply(gain.transpose()));

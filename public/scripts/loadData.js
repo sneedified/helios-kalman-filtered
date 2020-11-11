@@ -11,70 +11,8 @@ let timeLabelsApogee = [];
 let altWholeFlight = [];
 let altApogee = [];
 
-/* 1D Kalman Filter Altitude Date */
-let altKalmanWholeFlight1D = [];
-let altKalmanApogee1D = [];
-
-/* 3D Kalman Filter Altitude Data */
-let altKalmanWholeFlight3D = [];
-let altKalmanApogee3D = [];
-
-/* 3D Kalman Filter Velocity Data */
-let velKalmanWholeFlight3D = [];
-let velKalmanApogee3D = [];
-
-initialize();
-
-window.onload = function () {
-  document.getElementById("mVar1D").value = r;
-  document.getElementById("a").value = a;
-  document.getElementById("pVar1D").value = q;
-  document.getElementById("mVar3D").value = measurement_variance;
-  document.getElementById("pVar3D").value = acceleration_model_variance;
-}
-
-function rePlot1D() {
-  rForm1D = document.getElementById("mVar1D").value;
-  aForm = document.getElementById("a").value;
-  qForm1D = document.getElementById("pVar1D").value;
-  plotData1D();
-}
-
-function resetDefaults1D() {
-  document.getElementById("mVar1D").value = r;
-  document.getElementById("a").value = a;
-  document.getElementById("pVar1D").value = q;
-  plotData1D();
-}
-
-function rePlot3D() {
-  rForm3D = document.getElementById("mVar3D").value;
-  qForm3D = document.getElementById("pVar3D").value;
-  plotData3D();
-}
-
-function resetDefaults3D() {
-  document.getElementById("mVar3D").value = measurement_variance;
-  document.getElementById("pVar3D").value = acceleration_model_variance;
-  plotData3D();
-}
-
-async function initialize() {
+async function initializeData() {
   await getData();
-  plotData1D();
-  plotData3D();
-}
-
-function plotData1D() {
-  filterData1D();
-  createApogeeDataSet('1D');
-  createCharts('1D');
-}
-
-function plotData3D() {
-  filterData3D();
-  createApogeeDataSet('3D');
-  createCharts('3D');
 }
 
 async function getData() {

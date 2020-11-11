@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>1D Kalman Filter</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="scripts/loadData.js"></script>
+  <script src="scripts/plot1D.js"></script>
+  <script src="scripts/createCharts.js"></script>
+  <script src="scripts/kalmanFilter1D.js"></script>
+  <link rel="stylesheet" href="styles/stylesheet.css">
+</head>
+
+<body>
+  <div class="container">
+    <h2>1 Dimensional Kalman Filter:</h2>
+    <p>
+      These first two charts show how a 1 dimensional Kalman filter approximates the altitude data from
+      my level 1 HPR certification flight. It is considered a 1 dimensional filter because it only 
+      approximates 1 system state, which in this case is altitude. The equations are much simpler for a 
+      1 dimensional filter but the approximation also isn't quite as good. I made this filter as an initial 
+      way to understand the Kalman filter before creating the 3 dimensional filter below. This filter is 
+      also computationally less intense than the 3 dimensional filter and still provides a good estimate 
+      of altitude for a scenario that computing power is low.
+    </p>
+    <br>
+    <p>You can change the constants here and re-plot to see the results of the Kalman Filter!</p>
+    <div class="formDiv">
+      <form id="constants1D">
+        <label for="mVar1D">Measurement Uncertainty in Feet (r)\(^*\):</label><br>
+        <input class = "numInput" id="mVar1D" name="mVar1D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+        <label for="a">Constant Acceleration in ft/s\(^2\) (\(\hat{\ddot{x}}\)):</label><br>
+        <input class = "numInput" id="a" name="a" type="number" step="any"><br><br>
+        <label for="pVar1D">Process Noise Variance (q):</label><br>
+        <input class = "numInput" id="pVar1D" name="pVar1D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
+        <button type="button" onClick = "rePlot1D()">Plot</button><br>
+        <button type="button" onClick="resetDefaults1D()">Reset Defaults</button>
+      </form>
+    </div>
+    <p>\(^*\)Note that r was obtained for this dataset using data from the barometer but can be changed to see how it affects the filter.</p><br>
+    <p>This is the altitude data from the whole flight:</p>
+    <div class="chart">
+      <canvas id="wholeFlight1D"></canvas>
+    </div>
+    <p>Below is the data near apogee. This is where the filter needs to be the most accurate.</p>
+    <div class="chart">
+      <canvas id="apogee1D"></canvas>
+    </div>
+    <h2>Equations for a Kalman Filter in 1D:</h2>
+    <div class="kalmanEquations">
+      <p>
+        <u>State Update Equation:</u>
+        <div class="math">
+          $$ \hat{x}_{n,n} =\ \hat{x}_{n,n-1} +\ K_1(z_n -\ \hat{x}_{n,n-1})$$
+        </div>
+      </p>
+      <p>
+        <u>State Extrapolation Equation:</u>
+        <div class="math">
+          $$\hat{x}_{n+1,n} =\ \hat{x}_{n,n} +\ \hat{\dot{x}}_{n,n}\Delta{t} +\
+          \hat{\ddot{x}}_{n,n}\frac{\Delta{t^2}}{2}$$
+          $$\hat{\dot{x}}_{n+1,n} =\ \hat{\dot{x}}_{n,n} +\ \hat{\ddot{x}}_{n,n}\Delta{t}$$
+          $$\hat{\ddot{x}}_{n+1,n} =\ \hat{\ddot{x}}_{n,n}$$
+        </div>
+      </p>
+      <p>
+        <u>Kalman Gain Equation:</u>
+        <div class="math">
+          $$K_1 =\ \frac{p_{n,n-1}}{p_{n,n-1} + r_n}$$
+        </div>
+      </p>
+      <p>
+        <u>Covariance Update Equation:</u>
+        <div class="math">
+          $$p_{n+1,n} =\ p_{n,n} +\ q_n$$
+        </div>
+      </p>
+      <p>
+        <u>Covariance Extrapolation Equation:</u>
+        <div class="math">
+          $$p_{n,n} =\ (1-K_1)p_{n,n-1}$$
+        </div>
+      </p>
+    </div>
+    <p>
+      Where:<br><br>
+      \(\hat{x} =\ \) Altitude<br><br>
+      \(\hat{\dot{x}} =\ \) Velocity (in Z-Direction)<br><br>
+      \(\hat{\ddot{x}} =\ \) Acceleration (in Z-Direction)<br><br>
+      \(K_1 =\ \) Kalman Gain<br><br>
+      \(z =\ \) Altitude Measurement<br><br>
+      \(p =\ \) Estimate Uncertainty (Covariance)<br><br>
+      \(r =\ \) Measurement Uncertainty (Covariance)<br><br>
+      \(q =\ \) Process Noise Variance
+    </p>
+  </div>
+</body>
+
+</html>
