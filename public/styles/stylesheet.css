@@ -32,8 +32,8 @@ a {
 
 .chart {
   position: relative;
-  width: 100vw;
-  height: 100vw;
+  width: 80vw;
+  height: 40vw;
   display: inline-block;
 }
 
