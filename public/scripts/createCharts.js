@@ -129,6 +129,7 @@ let createCharts = function (selector) {
     ctx = document.getElementById('wholeFlight3D').getContext('2d');
     const wholeFlight = new Chart(ctx, {
       type: 'line',
+      maintainAspectRatio: false,
       data: {
         labels: timeLabelsWholeFlight,
         datasets: [{
@@ -206,6 +207,7 @@ let createCharts = function (selector) {
     ctx = document.getElementById('apogee3D').getContext('2d');
     const apogee = new Chart(ctx, {
       type: 'line',
+      maintainAspectRatio: false,
       data: {
         labels: timeLabelsApogee,
         datasets: [{
