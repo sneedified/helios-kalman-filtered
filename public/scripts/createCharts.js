@@ -34,6 +34,11 @@ let createCharts = function (selector) {
         lineAtIndex: apogeeIndex1D
       },
       options: {
+        title: {
+          display: true,
+          text: 'Data for the Whole Flight',
+          fontSize: 24
+        },
         elements: {
           point: {
             radius: 0
@@ -88,6 +93,11 @@ let createCharts = function (selector) {
         lineAtIndex: apogeeIndex1D - apogeeStartIndex
       },
       options: {
+        title: {
+          display: true,
+          text: 'Data near Apogee',
+          fontSize: 24
+        },
         scales: {
           xAxes: [{
             ticks: {
@@ -149,6 +159,11 @@ let createCharts = function (selector) {
         lineAtIndex: apogeeIndex3D
       },
       options: {
+        title: {
+          display: true,
+          text: 'Data for the Whole Flight',
+          fontSize: 24
+        },
         elements: {
           point: {
             radius: 0
@@ -219,6 +234,11 @@ let createCharts = function (selector) {
         lineAtIndex: apogeeIndex3D - apogeeStartIndex
       },
       options: {
+        title: {
+          display: true,
+          text: 'Data near Apogee',
+          fontSize: 24
+        },
         scales: {
           xAxes: [{
             ticks: {

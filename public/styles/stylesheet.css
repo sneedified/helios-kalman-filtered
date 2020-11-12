@@ -18,6 +18,8 @@ body {
   text-align: center;
   padding-left: 5em;
   padding-right: 5em;
+  padding-top: 2em;
+  padding-bottom: 2em;
 }
 
 form {
@@ -28,8 +30,14 @@ h1 {
   padding: 1em;
 }
 
+a {
+  color: white;
+}
+
 .formDiv {
   padding: 1em;
+  padding-top: 2em;
+  padding-bottom: 5em;
 }
 
 .container {
@@ -37,7 +45,7 @@ h1 {
   padding-right: 2em;
 }
 
-.kalmanEquations {
+.box {
   border-style: solid;
   margin-left: 10em;
   margin-right: 10em;
@@ -49,11 +57,12 @@ h1 {
 }
 
 .chart {
-  padding-top: 5em;
+  padding-top: 2em;
 }
 
 .kGains {
   padding-top: 2em;
+  padding-bottom: 2em;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }

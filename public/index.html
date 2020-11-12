@@ -22,15 +22,15 @@
   <h1>Kalman Filtering Test on Helios Rocket Flight Data</h1>
   <h2>3 Dimensional Kalman Filter:</h2>
   <p>
-    Check out my 1D Kalman Filter 
-    <a href = 1DKalman.html>here</a>
+    Check out my 
+    <a href = 1DKalman.html>1D Kalman Filter</a>
     !
   </p>
   <div class="formDiv">
     <form id="constants3D">
-      <label for="mVar3D">Measurement Uncertainty in Feet (r)\(^*\):</label><br>
+      <label for="mVar3D">Measurement Uncertainty in Feet (R)\(^*\):</label><br>
       <input class = "numInput" id="mVar3D" name="mVar3D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
-      <label for="pVar3D">Process Noise Variance (q):</label><br>
+      <label for="pVar3D">Process Noise Uncertainty (Q):</label><br>
       <input class = "numInput" id="pVar3D" name="pVar3D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
       <button type="button" onClick = "rePlot3D()">Plot</button><br>
       <button type="button" onClick="resetDefaults3D()">Reset Defaults</button>
@@ -54,6 +54,54 @@
       <canvas id="kGain3" height="200px"></canvas>
     </div>
   </div>
+  <h2>Equations for a Kalman Filter in any Dimension:</h2>
+    <div class="kalmanEquations">
+      <div class = "box">
+        <p>
+          <u>Kalman Gain Equation:</u>
+          <div class="math">
+            $$ K_n =\ P_{n,n-1}H^T(HP_{n,n-1} + R_n)^{-1} $$
+          </div>
+        </p>
+        <p>
+          <u>State Update Equation:</u>
+          <div class="math">
+            $$ \hat{x}_{n,n} =\ \hat{x}_{n,n-1} + K_n(z_n - H\hat{x}_{n,n-1}) $$
+          </div>
+        </p>
+        <p>
+          <u>Covariance Update Equation:</u>
+          <div class="math">
+            $$ P_{n,n} =\ (I - K_nH)P_{n,n-1}(I - K_nH)^T + K_nR_n{K_n}^T $$
+          </div>
+        </p>
+        <p>
+          <u>State Extrapolation Equation:</u>
+          <div class="math">
+            $$ \hat{x}_{n+1,n} =\ F\hat{x}_{n,n} $$
+          </div>
+        </p>
+        <p>
+          <u>Covariance Extrapolation Equation:</u>
+          <div class="math">
+            $$ P_{n+1,n} =\ FP_{n,n}F^T + Q $$
+          </div>
+        </p>
+      </div>
+      <br>
+      <p>
+        Where, For This Specific Case:<br><br><br>
+        \(K =\ \) Kalman Gain \( =\ \begin{bmatrix} K1 \\ K2 \\ K3 \end{bmatrix} \)<br><br><br>
+        \(\hat{x} =\ \) State Vector \( =\ \begin{bmatrix} \hat{x} \\ \hat{\dot{x}} \\ \hat{\ddot{x}} \end{bmatrix} \)<br><br><br>
+        \(P =\ \) Estimate Uncertainty (Covariance) Matrix<br><br><br>
+        \(H =\ \) Observation Matrix = \( \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \)<br><br><br>
+        \(R =\ \) Measurement Uncertainty (Covariance)<br><br><br>
+        \(z =\ \) Current Measurement<br><br><br>
+        \(I =\ \) 3 x 3 Identity Matrix \( =\ \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \)<br><br><br>
+        \(F =\ \) State Transition Matrix \( =\ \begin{bmatrix} 1 & \Delta{t} & \frac{\Delta{t}^2}{2} \\ 0 & 1 & \Delta{t} \\ 0 & 0 & 1 \end{bmatrix} \)<br><br><br>
+        \(Q =\ \) Process Noise Uncertainty Matrix
+      </p>
+    </div>
 </body>
 
 </html>

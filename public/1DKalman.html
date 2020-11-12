@@ -36,68 +36,69 @@
         <input class = "numInput" id="mVar1D" name="mVar1D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
         <label for="a">Constant Acceleration in ft/s\(^2\) (\(\hat{\ddot{x}}\)):</label><br>
         <input class = "numInput" id="a" name="a" type="number" step="any"><br><br>
-        <label for="pVar1D">Process Noise Variance (q):</label><br>
+        <label for="pVar1D">Process Noise Uncertainty (q):</label><br>
         <input class = "numInput" id="pVar1D" name="pVar1D" type="number" step="any" pattern="^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$"><br><br>
         <button type="button" onClick = "rePlot1D()">Plot</button><br>
         <button type="button" onClick="resetDefaults1D()">Reset Defaults</button>
       </form>
     </div>
-    <p>\(^*\)Note that r was obtained for this dataset using data from the barometer but can be changed to see how it affects the filter.</p><br>
-    <p>This is the altitude data from the whole flight:</p>
+    <p>\(^*\)Note that r was obtained for this dataset using data from the barometer but can be changed to see how it affects the filter.</p>
     <div class="chart">
       <canvas id="wholeFlight1D"></canvas>
     </div>
-    <p>Below is the data near apogee. This is where the filter needs to be the most accurate.</p>
     <div class="chart">
       <canvas id="apogee1D"></canvas>
     </div>
     <h2>Equations for a Kalman Filter in 1D:</h2>
     <div class="kalmanEquations">
+      <div class="box">
+        <p>
+          <u>State Update Equation:</u>
+          <div class="math">
+            $$ \hat{x}_{n,n} =\ \hat{x}_{n,n-1} +\ K_1(z_n -\ \hat{x}_{n,n-1})$$
+          </div>
+        </p>
+        <p>
+          <u>State Extrapolation Equation:</u>
+          <div class="math">
+            $$\hat{x}_{n+1,n} =\ \hat{x}_{n,n} +\ \hat{\dot{x}}_{n,n}\Delta{t} +\
+            \hat{\ddot{x}}_{n,n}\frac{\Delta{t^2}}{2}$$
+            $$\hat{\dot{x}}_{n+1,n} =\ \hat{\dot{x}}_{n,n} +\ \hat{\ddot{x}}_{n,n}\Delta{t}$$
+            $$\hat{\ddot{x}}_{n+1,n} =\ \hat{\ddot{x}}_{n,n}$$
+          </div>
+        </p>
+        <p>
+          <u>Kalman Gain Equation:</u>
+          <div class="math">
+            $$K_1 =\ \frac{p_{n,n-1}}{p_{n,n-1} + r_n}$$
+          </div>
+        </p>
+        <p>
+          <u>Covariance Update Equation:</u>
+          <div class="math">
+            $$p_{n+1,n} =\ p_{n,n} +\ q_n$$
+          </div>
+        </p>
+        <p>
+          <u>Covariance Extrapolation Equation:</u>
+          <div class="math">
+            $$p_{n,n} =\ (1-K_1)p_{n,n-1}$$
+          </div>
+        </p>
+      </div>
+      <br>
       <p>
-        <u>State Update Equation:</u>
-        <div class="math">
-          $$ \hat{x}_{n,n} =\ \hat{x}_{n,n-1} +\ K_1(z_n -\ \hat{x}_{n,n-1})$$
-        </div>
-      </p>
-      <p>
-        <u>State Extrapolation Equation:</u>
-        <div class="math">
-          $$\hat{x}_{n+1,n} =\ \hat{x}_{n,n} +\ \hat{\dot{x}}_{n,n}\Delta{t} +\
-          \hat{\ddot{x}}_{n,n}\frac{\Delta{t^2}}{2}$$
-          $$\hat{\dot{x}}_{n+1,n} =\ \hat{\dot{x}}_{n,n} +\ \hat{\ddot{x}}_{n,n}\Delta{t}$$
-          $$\hat{\ddot{x}}_{n+1,n} =\ \hat{\ddot{x}}_{n,n}$$
-        </div>
-      </p>
-      <p>
-        <u>Kalman Gain Equation:</u>
-        <div class="math">
-          $$K_1 =\ \frac{p_{n,n-1}}{p_{n,n-1} + r_n}$$
-        </div>
-      </p>
-      <p>
-        <u>Covariance Update Equation:</u>
-        <div class="math">
-          $$p_{n+1,n} =\ p_{n,n} +\ q_n$$
-        </div>
-      </p>
-      <p>
-        <u>Covariance Extrapolation Equation:</u>
-        <div class="math">
-          $$p_{n,n} =\ (1-K_1)p_{n,n-1}$$
-        </div>
+        Where:<br><br>
+        \(\hat{x} =\ \) Altitude<br><br>
+        \(\hat{\dot{x}} =\ \) Velocity (in Z-Direction)<br><br>
+        \(\hat{\ddot{x}} =\ \) Acceleration (in Z-Direction)<br><br>
+        \(K_1 =\ \) Kalman Gain<br><br>
+        \(z =\ \) Altitude Measurement<br><br>
+        \(p =\ \) Estimate Uncertainty (Covariance)<br><br>
+        \(r =\ \) Measurement Uncertainty (Covariance)<br><br>
+        \(q =\ \) Process Noise Variance
       </p>
     </div>
-    <p>
-      Where:<br><br>
-      \(\hat{x} =\ \) Altitude<br><br>
-      \(\hat{\dot{x}} =\ \) Velocity (in Z-Direction)<br><br>
-      \(\hat{\ddot{x}} =\ \) Acceleration (in Z-Direction)<br><br>
-      \(K_1 =\ \) Kalman Gain<br><br>
-      \(z =\ \) Altitude Measurement<br><br>
-      \(p =\ \) Estimate Uncertainty (Covariance)<br><br>
-      \(r =\ \) Measurement Uncertainty (Covariance)<br><br>
-      \(q =\ \) Process Noise Variance
-    </p>
   </div>
 </body>
 
