@@ -30,6 +30,13 @@ a {
   color: white;
 }
 
+.chart {
+  position: relative;
+  width: 80vw;
+  height: 40vw;
+  display: inline-block;
+}
+
 .box {
   border-style: solid;
   border-radius: 1em;
