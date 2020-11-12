@@ -32,9 +32,9 @@ a {
 
 .chart {
   position: relative;
-  width: 80vw;
-  height: 40vw;
   display: inline-block;
+  width: 100vw;
+  height: 100vw;
 }
 
 .box {
@@ -90,7 +90,6 @@ a {
 
   .kGain1 {
     grid-column: 1 / 2;
-    height: 100px;
   }
 
   .kGain2 {
