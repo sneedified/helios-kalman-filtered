@@ -2,13 +2,11 @@ let ctx;
 Chart.defaults.global.defaultFontColor = 'white';
 
 /* Colors */
-
 let orange = '255, 102, 0,';
 let green = '0, 247, 55,';
 let blue = '79, 173, 255,';
 let red = '255, 110, 110,';
-
-let kGainAspectRatio = 1;
+let backgroundColor = '74, 74, 74';
 
 let createCharts = function (selector) {
 
@@ -32,7 +30,8 @@ let createCharts = function (selector) {
           backgroundColor: 'rgba(' + green + ' 0.2)',
           borderColor: 'rgba(' + green + ' 1)',
           borderWidth: 1
-        }]
+        }],
+        lineAtIndex: apogeeIndex1D
       },
       options: {
         elements: {
@@ -53,6 +52,7 @@ let createCharts = function (selector) {
             }
           }],
           yAxes: [{
+            id: 'altitude',
             ticks: {
               beginAtZero: false
             },
@@ -84,7 +84,8 @@ let createCharts = function (selector) {
           backgroundColor: 'rgba(' + green + ' 0.2)',
           borderColor: 'rgba(' + green + ' 1)',
           borderWidth: 1
-        }]
+        }],
+        lineAtIndex: apogeeIndex1D - apogeeStartIndex
       },
       options: {
         scales: {
@@ -100,6 +101,7 @@ let createCharts = function (selector) {
             }
           }],
           yAxes: [{
+            id: 'altitude',
             ticks: {
               beginAtZero: false
             },
@@ -143,7 +145,8 @@ let createCharts = function (selector) {
           backgroundColor: 'rgba(' + blue + ' 0.2)',
           borderColor: 'rgba(' + blue + ' 1)',
           borderWidth: 1
-        }]
+        }],
+        lineAtIndex: apogeeIndex3D
       },
       options: {
         elements: {
@@ -212,7 +215,8 @@ let createCharts = function (selector) {
           backgroundColor: 'rgba(' + blue + ' 0.2)',
           borderColor: 'rgba(' + blue + ' 1)',
           borderWidth: 1
-        }]
+        }],
+        lineAtIndex: apogeeIndex3D - apogeeStartIndex
       },
       options: {
         scales: {
@@ -252,8 +256,6 @@ let createCharts = function (selector) {
     ctx = document.getElementById('kGain1').getContext('2d');
     const K1chart = new Chart(ctx, {
       type: 'line',
-      aspectRatio: kGainAspectRatio,
-      maintainAspectRatio: true,
       data: {
         labels: timeLabelsWholeFlight,
         datasets: [{
@@ -306,8 +308,6 @@ let createCharts = function (selector) {
     ctx = document.getElementById('kGain2').getContext('2d');
     const K2chart = new Chart(ctx, {
       type: 'line',
-      aspectRatio: kGainAspectRatio,
-      maintainAspectRatio: true,
       data: {
         labels: timeLabelsWholeFlight,
         datasets: [{
@@ -362,8 +362,6 @@ let createCharts = function (selector) {
     ctx = document.getElementById('kGain3').getContext('2d');
     const K3chart = new Chart(ctx, {
       type: 'line',
-      aspectRatio: kGainAspectRatio,
-      maintainAspectRatio: true,
       data: {
         labels: timeLabelsWholeFlight,
         datasets: [{
@@ -419,3 +417,36 @@ let createCharts = function (selector) {
     console.log('Incorrect Apogee Selector Used.')
   }
 }
+
+var originalLineDraw = Chart.controllers.line.prototype.draw;
+Chart.helpers.extend(Chart.controllers.line.prototype, {
+  draw: function () {
+    originalLineDraw.apply(this, arguments);
+
+    var chart = this.chart;
+    var ctx = chart.chart.ctx;
+
+    var index = chart.config.data.lineAtIndex;
+    if (index) {
+      var xaxis = chart.scales['x-axis-0'];
+      var yaxis = chart.scales['altitude'];
+
+      let lineEnd = (yaxis.top + chart.height * 0.05)
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(xaxis.getPixelForValue(undefined, index), lineEnd);
+      ctx.strokeStyle = ctx.fillStyle = 'rgb(255, 255, 255)';
+      ctx.lineTo(xaxis.getPixelForValue(undefined, index), yaxis.bottom);
+      ctx.stroke();
+
+      // write label
+      ctx.fillStyle = 'rgb(255, 255, 255)';
+      ctx.textAlign = 'center';
+      ctx.font = 'lighter 12px Helvetica';
+      ctx.fillText('Apogee Detected', xaxis.getPixelForValue(undefined, index), lineEnd - 15);
+
+      ctx.restore();
+    }
+  }
+});

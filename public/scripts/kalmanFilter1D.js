@@ -41,6 +41,12 @@ let K = 0;
 
 function filterData1D() {
 
+  /* Variables for the Apogee Detection Logic */
+  let launchDetected1D = false;
+  let apogeeDetected1D = false;
+  let lastAlt1D = 0;
+  let apogeeCount1D = 0;
+
   /* Update Constants from Form Input */
   rForm1D = parseFloat(document.getElementById("mVar1D").value);
   aForm = parseFloat(document.getElementById("a").value);
@@ -60,6 +66,24 @@ function filterData1D() {
 
     /* Store Updated Measurement */
     altKalmanWholeFlight1D[i] = x_correct;
+
+    /* Apogee Detect Logic */
+    if (x_correct > 10 && !launchDetected1D) {
+      launchDetected1D = true;
+      lastAlt1D = x_correct;
+    }
+    if (launchDetected1D) {
+      if (x_correct < lastAlt1D) {
+        apogeeCount1D++;
+      } else {
+        apogeeCount1D = 0;
+      }
+      if (apogeeCount1D >= 3 && !apogeeDetected1D) {
+        apogeeDetected1D = true; // Apogee Detected!
+        apogeeIndex1D = i;
+      }
+      lastAlt1D = x_correct;
+    }
 
     /* "Update" Velocity */
     v_correct = v_prev;

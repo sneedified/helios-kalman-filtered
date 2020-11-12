@@ -11,6 +11,10 @@ let timeLabelsApogee = [];
 let altWholeFlight = [];
 let altApogee = [];
 
+/* Indecies for making the "Zoomed-In" Graph at Apogee */
+let apogeeStartIndex = 49;
+let apogeeEndIndex = 91;
+
 async function initializeData() {
   await getData();
 }
@@ -39,8 +43,6 @@ function toMMSS(time) {
 }
 
 function createApogeeDataSet(selector) {
-  let apogeeStartIndex = 49;
-  let apogeeEndIndex = 91;
   timeLabelsApogee = timeLabelsWholeFlight.slice(apogeeStartIndex, apogeeEndIndex);
   altApogee = altWholeFlight.slice(apogeeStartIndex, apogeeEndIndex);
   if (selector == '1D' || selector == 'ALL') {

@@ -116,6 +116,12 @@ let gain = new Matrix([
 
 filterData3D = function () {
 
+  /* Variables for the Apogee Detection Logic */
+  let launchDetected3D = false;
+  let apogeeDetected3D = false;
+  let lastAlt3D = 0;
+  let apogeeCount3D = 0;
+
   /* Update Constants from Form Input */
   rForm3D = parseFloat(document.getElementById("mVar3D").value);
   qForm3D = new Matrix([
@@ -154,11 +160,29 @@ filterData3D = function () {
     xCorrect = xPrev.add(gain.multiply(measurement - (H.multiply(xPrev)).matrix[0][0]));
 
     /* Store Updated Estimates */
-    altKalmanWholeFlight3D[i] = xCorrect.matrix[0]; // Store Kalman Altitude
+    altKalmanWholeFlight3D[i] = xCorrect.matrix[0][0]; // Store Kalman Altitude
     velKalmanWholeFlight3D[i] = xCorrect.matrix[1] * 0.681818; // Store Kalman Velocity in mph
     K1[i] = gain.matrix[0]; // Kalman Gains
     K2[i] = gain.matrix[1];
     K3[i] = gain.matrix[2];
+
+    /* Apogee Detect Logic */
+    if (xCorrect.matrix[0][0] > 10 && !launchDetected3D) {
+      launchDetected3D = true;
+      lastAlt3D = xCorrect.matrix[0][0];
+    }
+    if (launchDetected3D) {
+      if (xCorrect.matrix[0][0] < lastAlt3D) {
+        apogeeCount3D++;
+      } else {
+        apogeeCount3D = 0;
+      }
+      if (apogeeCount3D >= 3 && !apogeeDetected3D) {
+        apogeeDetected3D = true; // Apogee Detected!
+        apogeeIndex3D = i;
+      }
+      lastAlt3D = xCorrect.matrix[0][0];
+    }
 
     /* Update the Estimate Uncertainty */
     pCorrect = (((I.subtract(gain.multiply(H))).multiply(pPredict)).multiply(((I.subtract(gain.multiply(H))).transpose()))).add((gain.multiply(rForm3D)).multiply(gain.transpose()));

@@ -11,6 +11,9 @@ let K1 = [];
 let K2 = [];
 let K3 = [];
 
+/* Data index when apogee is detected */
+let apogeeIndex3D = 0;
+
 initialize3DPlot();
 
 window.onload = function () {

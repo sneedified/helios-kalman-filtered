@@ -1,6 +1,9 @@
-/* 1D Kalman Filter Altitude Date */
+/* 1D Kalman Filter Altitude Data */
 let altKalmanWholeFlight1D = [];
 let altKalmanApogee1D = [];
+
+/* Data index when apogee is detected */
+let apogeeIndex1D = 0;
 
 initialize1DPlot();
 
