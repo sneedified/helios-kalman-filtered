@@ -32,8 +32,8 @@ a {
 
 .chart {
   position: relative;
-  width: 80vw;
-  height: 40vw;
+  width: 100vw;
+  height: 100vw;
   display: inline-block;
 }
 
@@ -61,6 +61,11 @@ a {
   .container {
     padding-left: 2em;
     padding-right: 2em;
+  }
+
+  .chart {
+    width: 80vw;
+    height: 40vw;
   }
 
   .box {
